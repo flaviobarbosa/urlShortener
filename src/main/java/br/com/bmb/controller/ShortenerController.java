@@ -1,14 +1,14 @@
 package br.com.bmb.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
 
-@RestController
-public class ShortenerController {
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
-		return "Up and running!";
-	}
+import br.com.bmb.model.UrlResource;
+
+public interface ShortenerController {
+
+	public String index();
+	public ResponseEntity<?> create(HttpServletRequest req, @RequestBody UrlResource urlResource);
 }
