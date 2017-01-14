@@ -13,11 +13,13 @@ import javax.persistence.OneToOne;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = UrlResource.FIND_BY_ALIAS, query = "Select u from UrlResource u where u.alias = :alias")
+	@NamedQuery(name = UrlResource.FIND_BY_ALIAS, query = "Select u from UrlResource u where u.alias = :alias"),
+	@NamedQuery(name = UrlResource.FIND_ORDERED_BY_REQUESTS, query = "Select u From UrlResource u ORDER BY u.statistics.numberOfRequests DESC")
 })
 public class UrlResource {
 
 	public static final String FIND_BY_ALIAS = "br.com.bmb.model.UrlResource#findByAlias";
+	public static final String FIND_ORDERED_BY_REQUESTS = "br.com.bmb.model.UrlResource#findTopTen";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

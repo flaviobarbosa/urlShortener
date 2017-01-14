@@ -1,6 +1,7 @@
 package br.com.bmb.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 
@@ -67,6 +68,7 @@ public class ShortenerServiceImpl implements ShortenerService {
 	}
 
 	@Transactional
+	@Override
 	public UrlResource getLongUrlForAlias(String alias) throws NoResultException {
 		try {
 			UrlResource urlResource = dao.findByAlias(alias);
@@ -92,4 +94,10 @@ public class ShortenerServiceImpl implements ShortenerService {
 		
 		dao.save(urlResource);
 	}
+
+	@Override
+	public List<UrlResource> getTopTen() {
+		return dao.findTopTen();
+	}
+
 }

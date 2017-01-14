@@ -1,6 +1,7 @@
 package br.com.bmb.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +73,14 @@ public class ShortenerControllerImpl implements ShortenerController {
 			
 			return new ResponseEntity<ErrorWrapper>(wrapper, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@RequestMapping(value = "/topten", method = RequestMethod.GET)
+	public ResponseEntity<?> getTopTen()
+	{
+		List<UrlResource> urlResources = service.getTopTen();
+		
+		return new ResponseEntity<List<UrlResource>>(urlResources, HttpStatus.OK);
 	}
 	
 }

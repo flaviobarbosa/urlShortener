@@ -1,5 +1,8 @@
 package br.com.bmb.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
@@ -31,5 +34,19 @@ public class ShortenerDaoImpl implements ShortenerDao {
 		} catch (NoResultException e) {
 			throw e;
 		}		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UrlResource> findTopTen() {
+		try {
+			List<UrlResource> urlResources = (List<UrlResource>) entityManager.createNamedQuery(UrlResource.FIND_ORDERED_BY_REQUESTS)
+																			  .setMaxResults(10)
+																			  .getResultList();
+			return urlResources;
+			
+		} catch (NoResultException e) {
+			return new ArrayList<UrlResource>();
+		}
 	}
 }
