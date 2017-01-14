@@ -20,15 +20,16 @@ public class ShortenerDaoImpl implements ShortenerDao {
 	}
 
 	@Override
-	public boolean isAliasAvailable(String alias) {
+	public UrlResource findByAlias(String alias) throws NoResultException {
 		try { 
-			entityManager.createNamedQuery(UrlResource.FIND_BY_ALIAS)
-						 .setParameter("alias", alias)
-						 .getSingleResult();
+			UrlResource urlResource = 
+					(UrlResource) entityManager.createNamedQuery(UrlResource.FIND_BY_ALIAS)
+											   .setParameter("alias", alias)
+											   .getSingleResult();
 			
-			return false;
+			return urlResource;
 		} catch (NoResultException e) {
-			return true;
+			throw e;
 		}		
 	}
 }

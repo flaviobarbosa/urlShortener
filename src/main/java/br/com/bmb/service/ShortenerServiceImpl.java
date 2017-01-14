@@ -2,6 +2,8 @@ package br.com.bmb.service;
 
 import java.util.Date;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -54,10 +56,40 @@ public class ShortenerServiceImpl implements ShortenerService {
 		do {
 			alias = ShortenerUtil.createAlias();
 
-			if(dao.isAliasAvailable(alias))
+			try {
+				dao.findByAlias(alias);
+			} catch (NoResultException e) {
 				isSearchingForAlias = false;
+			}
 		} while(isSearchingForAlias);
 
 		return alias;
+	}
+
+	@Transactional
+	public UrlResource getLongUrlForAlias(String alias) throws NoResultException {
+		try {
+			UrlResource urlResource = dao.findByAlias(alias);
+			
+			updateStatistic(urlResource);
+ 
+			return urlResource; 
+		} catch (NoResultException e) {
+			throw e;
+		}
+	}
+	
+	public void updateStatistic(UrlResource urlResource) {
+		Statistic statistic = urlResource.getStatistics();
+		
+		int numberOfRequests = statistic.getNumberOfRequests() + 1;
+		Date lastAccess = new Date();
+		
+		statistic.setNumberOfRequests(numberOfRequests);
+		statistic.setLastAccess(lastAccess);
+		
+		urlResource.setStatistics(statistic);
+		
+		dao.save(urlResource);
 	}
 }
