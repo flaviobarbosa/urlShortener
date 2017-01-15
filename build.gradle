@@ -45,6 +45,10 @@ dependencies {
     
 }
 
-bootRun {
-    jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
-}
+//bootRun {
+//    jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+//}
+
+//Heeroku
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
